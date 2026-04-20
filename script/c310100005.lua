@@ -17,6 +17,7 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCountLimit(1,id)
+	e1:SetCost(s.reg)
 	c:RegisterEffect(e1)
 	--Return this card to the hand
 	local e2=Effect.CreateEffect(c)
@@ -28,8 +29,12 @@ function s.initial_effect(c)
 	e2:SetOperation(s.activate)
 	c:RegisterEffect(e2)
 end
+function s.reg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	e:GetHandler():RegisterFlagEffect(id,RESET_PHASE|PHASE_END,EFFECT_FLAG_OATH,1)
+end
 function s.retcon(e,tp,eg,ep,ev,re,r,rp)
-	return true
+	return e:GetHandler():GetFlagEffect(id)~=0
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToHand() end
@@ -41,6 +46,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoHand(c,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,c)
 	end
+	c:ResetFlagEffect(id)
 end
 
 local function has_value(tab, val)

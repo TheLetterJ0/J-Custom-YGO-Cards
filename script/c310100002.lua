@@ -54,7 +54,7 @@ function s.flipconcounter(e,tp,eg,ep,ev,re,r,rp)
 	--condition
 	return Duel.GetFlagEffect(tp,id+100)>0 and aux.CanActivateSkill(tp)
 		and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil,tp)
-		and Duel.GetFlagEffect(tp,id+110)<=12
+		and Duel.GetFlagEffect(tp,id+110)<12
 end
 function s.cfilter(c)
 	return c:IsDiscardable()
@@ -92,19 +92,19 @@ function s.flipopmd(e,tp,eg,ep,ev,re,r,rp)
 		if n>#ids then n=1 end
 		if n==startIndex then
 			Duel.SelectOption(tp,false,aux.Stringid(id,4))
-			Duel.SendtoDeck(sc,tp,-2,REASON_RULE,nil)
+			Duel.RemoveCards(sc)
 			return
 		end
 		sc:Recreate(ids[n], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
 	end
 	Duel.SendtoGrave(g,REASON_COST+REASON_DISCARD)
+	Duel.ConfirmCards(tp,sc)
 	if Duel.SpecialSummon(sc,SUMMON_TYPE_SPECIAL,tp,tp,true,false,POS_FACEUP)>0 then
 		Duel.RegisterFlagEffect(tp,id+102,RESET_PHASE+PHASE_END,0,0)
 	end
 end
 function s.flipconed(e,tp,eg,ep,ev,re,r,rp)
 	--condition
-	local fg=Duel.GetMatchingGroup(s.fusfilter,tp,LOCATION_MZONE,0,nil)
 	local sg=Duel.GetMatchingGroup(s.sprfilter,tp,LOCATION_MZONE,0,nil)
 	local xg=Duel.GetMatchingGroup(s.xyzfilter,tp,LOCATION_MZONE,0,nil)
 	return Duel.GetFlagEffect(tp,id)>0 and aux.CanActivateSkill(tp)
@@ -166,12 +166,13 @@ function s.flipoped(e,tp,eg,ep,ev,re,r,rp)
 			if n>#ids then n=1 end
 			if n==startIndex then
 				Duel.SelectOption(tp,false,aux.Stringid(id,4))
-				Duel.SendtoDeck(sc,tp,-2,REASON_RULE,nil)
+				Duel.RemoveCards(sc)
 				return
 			end
 			sc:Recreate(ids[n], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
 		end
 		sc:SetMaterial(sg)
+		Duel.ConfirmCards(tp,sc)
 		Duel.SynchroSummon(tp,sc,sg)
 	elseif (b2 and op==2) then
 		local tg=Duel.GetMatchingGroup(s.xyzfilter1,tp,LOCATION_MZONE,0,nil,tp,xyzg,c)
@@ -200,12 +201,13 @@ function s.flipoped(e,tp,eg,ep,ev,re,r,rp)
 			if n>#ids then n=1 end
 			if n==startIndex then
 				Duel.SelectOption(tp,false,aux.Stringid(id,4))
-				Duel.SendtoDeck(sc,tp,-2,REASON_RULE,nil)
+				Duel.RemoveCards(sc)
 				return
 			end
 			sc:Recreate(ids[n], nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
 		end
 		sc:SetMaterial(sg)
+		Duel.ConfirmCards(tp,sc)
 		Duel.XyzSummon(tp,sc,sg)
 	end
 end
@@ -219,11 +221,11 @@ end
 function s.sprfilter2(c,tp,mc,sc)
 	local sg=Group.FromCards(c,mc)
 	local lvsum=c:GetLevel()+mc:GetLevel()
-	return s.sprfilter(c) and lvsum>=1 and lvsum <=12 and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
+	return s.sprfilter(c) and lvsum>=1 and lvsum<=12 and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
 end
 function s.sprfilter3(c,tunlev)
 	local lvsum=tunlev+c:GetLevel()
-	return s.sprfilter(c) and lvsum>=1 and lvsum <=12 and not c:IsType(TYPE_TUNER)
+	return s.sprfilter(c) and lvsum>=1 and lvsum<=12 and not c:IsType(TYPE_TUNER)
 end
 function s.sprfilter4(c)
 	return c:IsType(TYPE_TUNER) and s.sprfilter(c)
@@ -243,4 +245,3 @@ end
 function s.xyzfilter3(c,lv)
 	return c:GetLevel()==lv and s.xyzfilter(c)
 end
-
