@@ -1,4 +1,4 @@
-These cards were all created to allow for additional formats and game modes in EDOPro.
+These cards were all created to allow for additional formats and game modes in [Project Ignis's EDOPro](https://projectignis.github.io).
 
 This repo currently contains:
 - Momir
