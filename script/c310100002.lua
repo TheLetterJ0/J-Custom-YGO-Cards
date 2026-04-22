@@ -77,7 +77,10 @@ function s.flipconmd(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.flipopmd(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil,tp)
-	local lev,index=Duel.AnnounceLevel(tp,1,Duel.GetFlagEffect(tp,id+110))
+	local t={}
+	local maxlev=Duel.GetFlagEffect(tp,id+110)
+	for i=1,maxlev do t[i]=maxlev-i+1 end
+	local lev,index=Duel.AnnounceNumber(tp,table.unpack(t))
 	local ids=mdlevs[lev]
 	if not ids then
 		Duel.SelectOption(tp,false,aux.Stringid(id,4))
