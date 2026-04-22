@@ -191,11 +191,11 @@ function s.flipoped(e,tp,eg,ep,ev,re,r,rp)
 		local n=Duel.GetRandomNumber(1,#ids)
 		local sc=Duel.CreateToken(tp,ids[n])
 		Duel.SendtoDeck(sc,tp,0,REASON_RULE)
-		if not sc:IsXyzSummonable(sg) then
+		if not sc:IsXyzSummonable(sg,nil,2,2) then
 			Xyz.AddProcedure(sc,nil,lev,2)
 		end
 		local startIndex=n
-		while not sc:IsXyzSummonable(sg) do
+		while not sc:IsXyzSummonable(sg,nil,2,2) do
 			-- The card cannot be summoned for a reason other than its material requirements.
 			n=n+1
 			if n>#ids then n=1 end
@@ -221,7 +221,7 @@ end
 function s.sprfilter2(c,tp,mc,sc)
 	local sg=Group.FromCards(c,mc)
 	local lvsum=c:GetLevel()+mc:GetLevel()
-	return s.sprfilter(c) and lvsum>=1 and lvsum<=12 and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
+	return s.sprfilter(c) and lvsum>=1 and lvsum<=12 and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,TYPE_SYNCHRO)>0
 end
 function s.sprfilter3(c,tunlev)
 	local lvsum=tunlev+c:GetLevel()
@@ -240,7 +240,7 @@ end
 function s.xyzfilter2(c,tp,mc,sc)
 	local sg=Group.FromCards(c,mc)
 	local lv=c:GetLevel()
-	return s.xyzfilter(c) and lv==mc:GetLevel() and lv>=1 and lv<=13 and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
+	return s.xyzfilter(c) and lv==mc:GetLevel() and lv>=1 and lv<=13 and Duel.GetLocationCountFromEx(tp,tp,sg,TYPE_XYZ)>0
 end
 function s.xyzfilter3(c,lv)
 	return c:GetLevel()==lv and s.xyzfilter(c)
