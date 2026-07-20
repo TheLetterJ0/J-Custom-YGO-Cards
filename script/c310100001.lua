@@ -1,4 +1,4 @@
---Final Draw
+--The Heart of the Cards
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
@@ -30,7 +30,7 @@ function s.searchcon(e,tp,eg,ep,ev,re,r,rp)
 		and (Duel.IsDuelType(DUEL_1ST_TURN_DRAW) or Duel.GetTurnCount()>1)
 end
 function s.searchfilter(c)
-	return c:IsAbleToHand()
+	return true
 end
 function s.searchop(e,tp,eg,ep,ev,re,r,rp)
 	local dt=Duel.GetDrawCount(tp)
